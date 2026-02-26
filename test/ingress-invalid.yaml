@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-invalid
+  namespace: demo
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: demo.example.com
+      http:
+        paths:
+          # Broken regex — missing closing parenthesis
+          - path: /test(/(.*) 
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: demo-backend
+                port:
+                  number: 80

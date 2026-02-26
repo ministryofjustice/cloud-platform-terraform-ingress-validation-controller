@@ -1,0 +1,31 @@
+# Helm values for the VALIDATOR ingress-nginx controller
+# This is the patched controller that re-enables nginx -t testing during admission.
+# It does NOT serve traffic — it only validates ingress configs via its admission webhook.
+
+controller:
+  image:
+    repository: ingress-nginx-validator
+    tag: v1.14.3-patched
+    # Clear the digest so Helm uses the tag
+    digest: ""
+
+  admissionWebhooks:
+    enabled: true
+
+  # No traffic service — this controller only validates
+  service:
+    enabled: false
+
+  # Do not register its own IngressClass — it watches the same class as production
+  ingressClassResource:
+    enabled: false
+
+  ingressClass: nginx
+  watchIngressWithoutClass: true
+
+  # Separate election ID to avoid conflicts with the production controller
+  electionID: ingress-controller-leader-validator
+
+  # Extra args (use --set-string for boolean-like values)
+  # --set-string controller.extraArgs.update-status=false
+  # This prevents the validator from overwriting ingress status fields

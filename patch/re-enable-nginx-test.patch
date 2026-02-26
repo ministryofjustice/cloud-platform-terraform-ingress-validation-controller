@@ -1,0 +1,20 @@
+diff --git a/internal/ingress/controller/controller.go b/internal/ingress/controller/controller.go
+index 4e1877d..fc3dfe6 100644
+--- a/internal/ingress/controller/controller.go
++++ b/internal/ingress/controller/controller.go
+@@ -442,14 +442,12 @@ func (n *NGINXController) CheckIngress(ing *networking.Ingress) error {
+ 		return err
+ 	}
+ 
+-	/* Deactivated to mitigate CVE-2025-1974
+-	// TODO: Implement sandboxing so this test can be done safely
++	// Re-enabled for admission validation PoC (CVE-2025-1974 mitigated by network isolation)
+ 	err = n.testTemplate(content)
+ 	if err != nil {
+ 		n.metricCollector.IncCheckErrorCount(ing.ObjectMeta.Namespace, ing.Name)
+ 		return err
+ 	}
+-	*/
+ 
+ 	n.metricCollector.IncCheckCount(ing.ObjectMeta.Namespace, ing.Name)
+ 	endCheck := time.Now().UnixNano() / 1000000

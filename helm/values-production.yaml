@@ -1,0 +1,20 @@
+# Helm values for the PRODUCTION ingress-nginx controller
+# This is the stock (unpatched) controller that handles actual traffic routing.
+# Admission webhooks are DISABLED here — validation is handled by the separate validator deployment.
+
+controller:
+  # Use the stock upstream image (no patch)
+  admissionWebhooks:
+    enabled: false
+
+  service:
+    type: NodePort
+
+  ingressClassResource:
+    name: nginx
+    default: true
+
+  watchIngressWithoutClass: true
+
+  # Standard election ID (default)
+  electionID: ingress-controller-leader
