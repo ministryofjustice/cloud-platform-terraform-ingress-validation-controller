@@ -1,4 +1,5 @@
 # Build stage: compile the patched controller binary from ingress-nginx source
+ARG INGRESS_NGINX_IMAGE=registry.k8s.io/ingress-nginx/controller:v1.14.3
 FROM golang:1.25.6-alpine AS builder
 
 RUN apk add --no-cache git gcc musl-dev
@@ -26,7 +27,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     k8s.io/ingress-nginx/cmd/nginx
 
 # Final stage: overlay patched binary onto the stock controller image
-ARG INGRESS_NGINX_IMAGE=registry.k8s.io/ingress-nginx/controller:v1.14.3
+ARG INGRESS_NGINX_IMAGE
 FROM ${INGRESS_NGINX_IMAGE}
 
 USER root

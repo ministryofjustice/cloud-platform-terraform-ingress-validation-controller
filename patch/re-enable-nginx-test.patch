@@ -1,13 +1,15 @@
 diff --git a/internal/ingress/controller/controller.go b/internal/ingress/controller/controller.go
-index 4e1877d..fc3dfe6 100644
+index 4e1877d..8bef611 100644
 --- a/internal/ingress/controller/controller.go
 +++ b/internal/ingress/controller/controller.go
-@@ -442,14 +442,12 @@ func (n *NGINXController) CheckIngress(ing *networking.Ingress) error {
+@@ -442,14 +442,14 @@ func (n *NGINXController) CheckIngress(ing *networking.Ingress) error {
  		return err
  	}
  
 -	/* Deactivated to mitigate CVE-2025-1974
 -	// TODO: Implement sandboxing so this test can be done safely
++	klog.Infof("--- ADMISSION VALIDATED CONFIG for %s/%s ---\n%s\n--- END CONFIG ---", ing.Namespace, ing.Name, string(content))
++
 +	// Re-enabled for admission validation PoC (CVE-2025-1974 mitigated by network isolation)
  	err = n.testTemplate(content)
  	if err != nil {
