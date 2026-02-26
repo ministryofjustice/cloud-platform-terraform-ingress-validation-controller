@@ -122,5 +122,5 @@ webhook's config-rendering path could be exploited by attackers with pod-level
 network access. The upstream fix disabled the deepest validation check (`nginx -t`
 against the full merged config), leaving only annotation-level validation.
 
-This project restores `nginx -t` testing via a dedicated, network-isolated
-validator deployment that is not reachable by tenant workloads.
+This project restores `nginx -t` testing via a dedicated validator deployment.
+When paired with a NetworkPolicy that restricts the validator pod's egress to only the Kubernetes API server, tenant workloads cannot reach it; deploying without such a policy leaves the validator vulnerable to the original CVE-2025-1974 network attack vector.
