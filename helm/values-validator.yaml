@@ -8,6 +8,7 @@ controller:
     tag: v1.14.3-patched
     # Clear the digest so Helm uses the tag
     digest: ""
+    imagePullPolicy: IfNotPresent
 
   admissionWebhooks:
     enabled: true
