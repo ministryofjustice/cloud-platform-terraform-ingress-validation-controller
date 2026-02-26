@@ -25,7 +25,7 @@ cluster: ## Create Kind cluster
 # ── Build & Load ──────────────────────────────────────────────
 build: ## Build the patched validator image
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) \
-		--build-arg CONTROLLER_TAG=controller-$(CONTROLLER_TAG) .
+		--build-arg INGRESS_NGINX_VERSION=controller-$(CONTROLLER_TAG) .
 
 load: ## Load the image into the Kind cluster
 	kind load docker-image $(IMAGE_NAME):$(IMAGE_TAG) --name $(KIND_CLUSTER)
