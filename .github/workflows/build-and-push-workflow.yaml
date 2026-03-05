@@ -2,7 +2,7 @@ name: build-and-push-workflow
 
 on:
   push:
-    branches: [main, create-ecr-workflow]
+    branches: [main]
 
 jobs:
   ecr:
