@@ -1,0 +1,15 @@
+# Production controller for IngressClass: nginx-modsec
+controller:
+  admissionWebhooks:
+    enabled: false
+
+  service:
+    type: NodePort
+
+  ingressClassResource:
+    name: nginx-modsec
+    default: false
+    controllerValue: k8s.io/ingress-nginx-modsec
+
+  watchIngressWithoutClass: false
+  electionID: ingress-controller-leader-modsec

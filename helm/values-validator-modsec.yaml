@@ -1,0 +1,20 @@
+# Validator controller for IngressClass: nginx-modsec
+controller:
+  image:
+    repository: ingress-nginx-validator
+    tag: v1.14.3-patched
+    digest: ""
+
+  admissionWebhooks:
+    enabled: true
+
+  service:
+    enabled: false
+
+  ingressClassResource:
+    enabled: false
+    controllerValue: k8s.io/ingress-nginx-modsec
+
+  ingressClass: nginx-modsec
+  watchIngressWithoutClass: false
+  electionID: ingress-controller-leader-validator-modsec

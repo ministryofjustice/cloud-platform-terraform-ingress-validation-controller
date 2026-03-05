@@ -1,0 +1,15 @@
+# Production controller for IngressClass: nginx-internal
+controller:
+  admissionWebhooks:
+    enabled: false
+
+  service:
+    type: NodePort
+
+  ingressClassResource:
+    name: nginx-internal
+    default: false
+    controllerValue: k8s.io/ingress-nginx-internal
+
+  watchIngressWithoutClass: false
+  electionID: ingress-controller-leader-internal
