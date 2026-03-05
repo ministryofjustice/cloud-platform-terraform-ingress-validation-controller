@@ -1,7 +1,39 @@
-# nginx-config-validator
+# cloud-platform-terraform-ingress-validation-controller
+
+## About
 
 Restore full-depth `nginx -t` admission validation for ingress-nginx, mitigating
 the gap left when CVE-2025-1974 disabled template testing in v1.12.1+.
+
+This module will deploy a validation-only ingress-nginx controller with optional modsec support.
+
+## Use
+
+Stand up a validating controller for each `v1.12.1+` production controller you want to protect.
+
+For example, if you have a `default` class Cloud Platform Ingress Controller:
+
+```hcl
+module "default_ingress_controllers_validator" {
+  source = github.com/ministryofjustice/cloud-platform-terraform-ingress-validation-controller?ref=x.x.x"
+
+  replica_count        = "3"
+  controller_name      = "default"
+  enable_anti_affinity = terraform.workspace == "live" ? true : false
+  memory_requests      = lookup(local.live_workspace, terraform.workspace, false) ? "4Gi" : "512Mi"
+  memory_limits        = lookup(local.live_workspace, terraform.workspace, false) ? "20Gi" : "2Gi"
+  cluster              = terraform.workspace
+  validator_registry   = "1234.dkr.ecr.eu-west-2.amazonaws.com"
+  validator_image      = "my-cp-team/registry-name"
+  validator_tag        = "abcd1234"
+  validator_digest     = "sha256:abcd1234"
+
+  default_tags = local.default_tags
+
+  depends_on = [module.ingress_controllers_v1]
+
+}
+```
 
 ## Architecture
 
